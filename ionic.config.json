@@ -1,0 +1,7 @@
+{
+  "name": "DobleElectricidadApp",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
