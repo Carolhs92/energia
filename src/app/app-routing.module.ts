@@ -5,25 +5,27 @@ import { LoginPage } from './login/login.page';
 const routes: Routes = [
   {
     path: '',
-    component: LoginPage
+    redirectTo: 'login',
+    pathMatch: 'full'
   },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
+    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule)
   },
   {
     path: 'facturas',
-    loadChildren: () => import('./facturas/facturas.module').then( m => m.FacturasPageModule)
+    loadChildren: () => import('./facturas/facturas.module').then(m => m.FacturasPageModule)
   },
   {
     path: 'perfil',
-    loadChildren: () => import('./perfil/perfil.module').then( m => m.PerfilPageModule)
+    loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilPageModule)
   },
 ];
+
 
 @NgModule({
   imports: [

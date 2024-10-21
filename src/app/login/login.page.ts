@@ -21,12 +21,19 @@ export class LoginPage implements OnInit {
 
   onSubmit() {
     const { username, password } = this.loginForm.value;
-
+    
+    console.log('Intentando iniciar sesión con:', username, password); // Debugging
+  
     // Simulación de autenticación con datos mock
-    if (username === 'admin' && password === '1234') {
-      this.router.navigate(['/dashboard']);
+    if (username === 'carol' && password === '1234') {
+      console.log('Autenticación correcta, navegando al dashboard');
+      this.router.navigate(['/dashboard']).then(()=>{
+        window.location.reload();
+      });
     } else {
+      console.log('Autenticación incorrecta');
       alert('Usuario o contraseña incorrecta');
     }
   }
+  
 }
