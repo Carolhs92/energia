@@ -1,0 +1,27 @@
+<ion-content>
+  <mat-card>
+    <form [formGroup]="personalForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Nombre titular</mat-label>
+        <input matInput formControlName="nombre" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Correo electrónico</mat-label>
+        <input matInput formControlName="email" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Fecha de alta</mat-label>
+        <input matInput formControlName="fechaAlta" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Dirección de envío</mat-label>
+        <input matInput formControlName="direccionEnvio" required>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Guardar</button>
+    </form>
+  </mat-card>
+</ion-content>

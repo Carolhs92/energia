@@ -1,0 +1,23 @@
+<ion-content>
+  <div class="login-container">
+    <mat-toolbar color="primary" class="login-header">
+      <span>Login</span>
+    </mat-toolbar>
+
+   
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill">
+        <mat-label>Usuario</mat-label>
+        <input matInput formControlName="username" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Contraseña</mat-label>
+        <input matInput formControlName="password" type="password" required>
+      </mat-form-field>
+
+      <button mat-raised-button color="primary" type="submit">Ingresar</button>
+    </form>
+
+  </div>
+</ion-content>
