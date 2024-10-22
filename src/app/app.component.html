@@ -1,5 +1,7 @@
 <ion-app>
-  <app-menu></app-menu>
-  <ion-router-outlet></ion-router-outlet>
+  <ng-container *ngIf="!isLoginPage()">
+    <app-menu></app-menu>
+  </ng-container>
+  <ion-router-outlet [class.with-padding]="!isLoginPage()"></ion-router-outlet>
   <app-footer></app-footer>
 </ion-app>
