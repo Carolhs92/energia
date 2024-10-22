@@ -26,8 +26,8 @@ export class LoginPage implements OnInit {
   
     // Simulación de autenticación con datos mock
     if (username === 'carol' && password === '1234') {
-      console.log('Autenticación correcta, navegando al dashboard');
-      this.router.navigate(['/dashboard']).then(()=>{
+      console.log('Autenticación correcta, navegando a Facturas');
+      this.router.navigate(['/facturas']).then(()=>{
         window.location.reload();
       });
     } else {

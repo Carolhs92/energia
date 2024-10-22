@@ -1,5 +1,8 @@
 <ion-content>
-  <mat-card>
+  <mat-toolbar color="primary" class="dashboard-header">
+    <span>Perfil</span>
+  </mat-toolbar>
+
     <form [formGroup]="personalForm" (ngSubmit)="onSubmit()">
       <mat-form-field appearance="fill">
         <mat-label>Nombre titular</mat-label>
@@ -23,5 +26,5 @@
 
       <button mat-raised-button color="primary" type="submit">Guardar</button>
     </form>
-  </mat-card>
+
 </ion-content>

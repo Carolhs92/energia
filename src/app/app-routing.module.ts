@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
-import { LoginPage } from './login/login.page';
+import { AuthGuard } from './auth.guard'; 
 
 const routes: Routes = [
   {
@@ -13,19 +13,16 @@ const routes: Routes = [
     loadChildren: () => import('./login/login.module').then(m => m.LoginPageModule)
   },
   {
-    path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardPageModule)
-  },
-  {
     path: 'facturas',
-    loadChildren: () => import('./facturas/facturas.module').then(m => m.FacturasPageModule)
+    loadChildren: () => import('./facturas/facturas.module').then(m => m.FacturasPageModule),
+    canActivate: [AuthGuard]
   },
   {
     path: 'perfil',
-    loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilPageModule)
-  },
+    loadChildren: () => import('./perfil/perfil.module').then(m => m.PerfilPageModule),
+    canActivate: [AuthGuard]
+  }
 ];
-
 
 @NgModule({
   imports: [
@@ -33,4 +30,4 @@ const routes: Routes = [
   ],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

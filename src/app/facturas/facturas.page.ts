@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 export interface Factura {
   nombre: string;
@@ -12,22 +13,22 @@ export interface Factura {
   templateUrl: './facturas.page.html',
   styleUrls: ['./facturas.page.scss'],
 })
-export class FacturasPage implements OnInit {
+export class FacturasPage {
   displayedColumns: string[] = ['nombre', 'fecha', 'importe', 'direccion'];
   facturas: Factura[] = [
     { nombre: 'Factura 1', fecha: '2023-10-19', importe: 100, direccion: 'Calle Falsa 123' },
     { nombre: 'Factura 2', fecha: '2023-10-18', importe: 200, direccion: 'Calle Real 456' },
   ];
 
-  constructor() {
-    console.log('Facturas page initialized');
-  }
+  constructor(private router: Router) {}
 
-  ionViewWillEnter() {
-    console.log('Entering Facturas page');
-  }
+  // goToFacturas() {
+  //   this.router.navigate(['/facturas'], { replaceUrl: true });
+  // }
 
-  ngOnInit() {
-    console.log('Facturas page loaded');
-  }
+  // goToPerfil() {
+  //   this.router.navigate(['/perfil'], { replaceUrl: true });
+  // }
+  
+
 }

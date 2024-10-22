@@ -9,11 +9,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { LoginPageRoutingModule } from './login-routing.module';
 import { LoginPage } from './login.page';
+import { SharedModule } from '../shared/shared.module';
 import { IonicModule } from '@ionic/angular';
 
 @NgModule({
   declarations: [LoginPage],
   imports: [
+    SharedModule,
     CommonModule,
     ReactiveFormsModule,
     MatCardModule,
@@ -22,7 +24,7 @@ import { IonicModule } from '@ionic/angular';
     MatButtonModule,
     MatToolbarModule,
     IonicModule,
-    LoginPageRoutingModule
+    LoginPageRoutingModule,
   ]
 })
 export class LoginPageModule { }

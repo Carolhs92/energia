@@ -1,0 +1,8 @@
+<mat-toolbar class="dashboard-header center backgroundColor_light">
+  <span class="titulo">Doble Electricidad</span>
+</mat-toolbar>
+<button mat-button [matMenuTriggerFor]="menu">Menú <mat-icon>menu</mat-icon> </button>
+<mat-menu #menu="matMenu">
+  <button mat-menu-item (click)="goToFacturas()">Facturas</button>
+  <button mat-menu-item (click)="goToPerfil()">Perfil</button>
+</mat-menu>
