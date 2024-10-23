@@ -15,6 +15,10 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
 
+import { FacturasService } from './services/facturas.service'; 
+
+
+
 @NgModule({
   declarations: [
     AppComponent
@@ -34,8 +38,14 @@ import { MatMenuModule } from '@angular/material/menu';
     MatToolbarModule,
     MatMenuModule,
     AppRoutingModule,  
+
   ],
-  providers: [{provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    FacturasService, 
+    {
+    provide: RouteReuseStrategy, 
+    useClass: IonicRouteStrategy, 
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

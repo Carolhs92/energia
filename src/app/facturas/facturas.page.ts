@@ -1,34 +1,40 @@
-import {Component } from '@angular/core';
-import { Router } from '@angular/router';
-
-export interface Factura {
-  nombre: string;
-  fecha: string;
-  importe: number;
-  direccion: string;
-}
+import { Component, OnInit } from '@angular/core';
+import { FacturasService } from '../services/facturas.service';
 
 @Component({
   selector: 'app-facturas',
   templateUrl: './facturas.page.html',
   styleUrls: ['./facturas.page.scss'],
 })
-export class FacturasPage {
-  displayedColumns: string[] = ['nombre', 'fecha', 'importe', 'direccion'];
-  facturas: Factura[] = [
-    { nombre: 'Factura 1', fecha: '2023-10-19', importe: 100, direccion: 'Calle Falsa 123' },
-    { nombre: 'Factura 2', fecha: '2023-10-18', importe: 200, direccion: 'Calle Real 456' },
-  ];
+export class FacturasPage implements OnInit {
+  facturas: any[] = [];
+  displayedColumns: string[] = ['nombre', 'fecha_emision', 'importe', 'direccion_suministro', 'descargar'];
 
-  constructor(private router: Router) {}
+  constructor(private facturasService: FacturasService) {}
 
-  // goToFacturas() {
-  //   this.router.navigate(['/facturas'], { replaceUrl: true });
-  // }
+  ngOnInit() {
+    this.loadFacturasPaginadas();  
+  }
 
-  // goToPerfil() {
-  //   this.router.navigate(['/perfil'], { replaceUrl: true });
-  // }
-  
+  async loadFacturasPaginadas() {
+    const { data, error } = await this.facturasService.getFacturasPaginadas();
+    if (error) {
+      console.error('Error al traer las facturas', error);
+    } else {
+      this.facturas = data || [];
+      console.log('Facturas cargadas:', this.facturas);
+    }
+  }
 
+  async downloadPDF(facturaId: string) {
+    const file = await this.facturasService.download(facturaId);
+    if (file) {
+      const url = URL.createObjectURL(file);  // Crear una URL para el archivo Blob
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `factura_${facturaId}.pdf`;  // Nombre del archivo
+      a.click();
+      URL.revokeObjectURL(url);  // Liberar la URL después de usarla
+    }
+  }
 }
