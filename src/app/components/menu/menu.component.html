@@ -1,8 +1,22 @@
+<!-- Barra de herramientas en la parte superior -->
 <mat-toolbar class="dashboard-header center backgroundColor_light">
   <span class="titulo">Doble Electricidad</span>
 </mat-toolbar>
-<button mat-button [matMenuTriggerFor]="menu">Menú <mat-icon>menu</mat-icon> </button>
-<mat-menu #menu="matMenu">
-  <button mat-menu-item (click)="goToFacturas()">Facturas</button>
-  <button mat-menu-item (click)="goToPerfil()">Perfil</button>
-</mat-menu>
+
+<!-- Menú y Cerrar sesión en una línea debajo de la barra de herramientas -->
+<div class="menu-bar">
+  <!-- Menú en el lado izquierdo -->
+  <button mat-button [matMenuTriggerFor]="menu">
+    <mat-icon>menu</mat-icon> Menú
+  </button>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="goToFacturas()">Facturas</button>
+    <button mat-menu-item (click)="goToPerfil()">Perfil</button>
+  </mat-menu>
+
+  <!-- Botón de cerrar sesión en el lado derecho -->
+  <button mat-button (click)="logout()" class="logout-button">
+    <mat-icon>exit_to_app</mat-icon> Cerrar sesión
+  </button>
+</div>

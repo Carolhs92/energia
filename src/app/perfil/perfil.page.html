@@ -3,28 +3,30 @@
     <span>Perfil</span>
   </mat-toolbar>
 
-    <form [formGroup]="personalForm" (ngSubmit)="onSubmit()">
-      <mat-form-field appearance="fill">
-        <mat-label>Nombre titular</mat-label>
-        <input matInput formControlName="nombre" required>
-      </mat-form-field>
+  <!-- Contenedor para organizar los elementos en dos columnas -->
+  <div class="profile-form-container">
+    <mat-form-field appearance="fill">
+      <mat-label>Nombre titular</mat-label>
+      <input matInput [(ngModel)]="nombre" required>
+    </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Correo electrónico</mat-label>
-        <input matInput formControlName="email" required>
-      </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Correo electrónico</mat-label>
+      <input matInput [(ngModel)]="correo" required readonly>
+    </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Fecha de alta</mat-label>
-        <input matInput formControlName="fechaAlta" required>
-      </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Fecha de alta</mat-label>
+      <input matInput [(ngModel)]="fechaAlta" required readonly>
+    </mat-form-field>
 
-      <mat-form-field appearance="fill">
-        <mat-label>Dirección de envío</mat-label>
-        <input matInput formControlName="direccionEnvio" required>
-      </mat-form-field>
+    <mat-form-field appearance="fill">
+      <mat-label>Dirección de envío</mat-label>
+      <input matInput [(ngModel)]="direccion" required>
+    </mat-form-field>
+  </div>
 
-      <button mat-raised-button color="primary" type="submit">Guardar</button>
-    </form>
-
+  <div class="button-container">
+    <button mat-raised-button color="primary" (click)="actualizarPerfil()">Guardar Cambios</button>
+  </div>
 </ion-content>

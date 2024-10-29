@@ -1,34 +1,65 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 
 @Component({
   selector: 'app-perfil',
   templateUrl: './perfil.page.html',
   styleUrls: ['./perfil.page.scss'],
-
 })
-export class PerfilPage {
-  personalForm: FormGroup;
+export class PerfilPage implements OnInit {
+  nombre: string = '';
+  correo: string = '';
+  fechaAlta: string = '';
+  direccion: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
-    this.personalForm = this.fb.group({
-      nombre: ['Juan Pérez', Validators.required],
-      email: ['juan.perez@example.com', [Validators.required, Validators.email]],
-      fechaAlta: ['2023-01-01', Validators.required],
-      direccionEnvio: ['Calle Falsa 123', Validators.required],
-    });
+  constructor(
+    private authService: AuthService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit() {
+    this.loadPerfil();
   }
 
-  onSubmit() {
-    console.log('Datos personales actualizados:', this.personalForm.value);
+  // Cargar datos del perfil del usuario
+  async loadPerfil() {
+    const { data: { session } } = await this.authService.getCurrentUser();
+    if (session && session.user) {
+      const { data: perfil, error } = await this.userService.getUserData(session.user.id);
+
+      if (perfil && perfil.length > 0) {
+        // Asignar valores directamente a las propiedades de la clase
+        this.nombre = perfil[0].nombre;
+        this.correo = perfil[0].correo || session.user.email; // Usa el correo de sesión si no está en el perfil
+        this.fechaAlta = perfil[0].fecha_alta;
+        this.direccion = perfil[0].direccion;
+      } else {
+        console.error('Perfil no encontrado o vacío.');
+      }
+    } else {
+      console.error('No hay sesión activa o usuario no encontrado.');
+    }
   }
 
-  // goToFacturas() {
-  //   this.router.navigate(['/facturas'], { replaceUrl: true });
-  // }
+  // Actualizar los datos del perfil
+  async actualizarPerfil() {
+    const { data: { session } } = await this.authService.getCurrentUser();
 
-  // goToPerfil() {
-  //   this.router.navigate(['/perfil'], { replaceUrl: true });
-  // }
+    if (session && session.user) {
+      const updateData = {
+        nombre: this.nombre,
+        direccion: this.direccion,
+        correo: this.correo,  // Usa el correo actual
+        fecha_alta: this.fechaAlta
+      };
+      const { data, error } = await this.userService.updateUserData(session.user.id, updateData);
+
+      if (error) {
+        console.error('Error actualizando perfil:', error);
+      } else {
+        alert('Perfil actualizado correctamente');
+      }
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-menu',
@@ -7,15 +8,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./menu.component.scss'],
 })
 export class MenuComponent  {
-
-  constructor(private router: Router) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
 
   goToFacturas() {
-    this.router.navigate(['/facturas'], { replaceUrl: true });
+    this.router.navigate(['/facturas']);
   }
 
   goToPerfil() {
-    this.router.navigate(['/perfil'], { replaceUrl: true });
+    this.router.navigate(['/perfil']);
   }
 
+  async logout() {
+    await this.authService.logout();
+    this.router.navigate(['/login']);
+  }
 }
