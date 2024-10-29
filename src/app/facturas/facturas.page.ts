@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 import { FacturasService } from '../services/facturas.service';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-facturas',
@@ -7,34 +9,51 @@ import { FacturasService } from '../services/facturas.service';
   styleUrls: ['./facturas.page.scss'],
 })
 export class FacturasPage implements OnInit {
-  facturas: any[] = [];
+  facturas: MatTableDataSource<any> = new MatTableDataSource<any>([]);
   displayedColumns: string[] = ['nombre', 'fecha_emision', 'importe', 'direccion_suministro', 'descargar'];
+  userId: string | null = null;
 
-  constructor(private facturasService: FacturasService) {}
+  constructor(private facturasService: FacturasService, private authService: AuthService) {}
 
-  ngOnInit() {
-    this.loadFacturasPaginadas();  
+  async ngOnInit() {
+    const session = await this.authService.getCurrentUser();
+    console.log("ID del usuario autenticado:", session?.user?.id);
+    this.userId = session?.user?.id || null;
+
+    if (this.userId) {
+      await this.loadFacturasPaginadas();
+    } else {
+      console.error('No se pudo obtener el ID del usuario.');
+    }
   }
 
   async loadFacturasPaginadas() {
-    const { data, error } = await this.facturasService.getFacturasPaginadas();
+    if (!this.userId) {
+      console.error("User ID no está definido.");
+      return;
+    }
+  
+    console.log('Cargando facturas para userId:', this.userId);  // Confirmar userId en la consola
+  
+    const { data, error } = await this.facturasService.getFacturasByUser(this.userId);
     if (error) {
       console.error('Error al traer las facturas', error);
     } else {
-      this.facturas = data || [];
-      console.log('Facturas cargadas:', this.facturas);
+      this.facturas.data = data || [];
+      console.log('Facturas cargadas:', this.facturas.data);
     }
-  }
-
+  }  
+  
   async downloadPDF(facturaId: string) {
-    const file = await this.facturasService.download(facturaId);
-    if (file) {
-      const url = URL.createObjectURL(file);  // Crear una URL para el archivo Blob
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `factura_${facturaId}.pdf`;  // Nombre del archivo
-      a.click();
-      URL.revokeObjectURL(url);  // Liberar la URL después de usarla
+    const result = await this.facturasService.download(facturaId);
+    
+    if (result?.error) {
+      console.error('Error al descargar el PDF:', result.error);
+    } else if (result?.data) {
+      console.log('PDF descargado con éxito');
+    } else {
+      console.error('No se pudo descargar el PDF debido a un error desconocido.');
     }
   }
+  
 }

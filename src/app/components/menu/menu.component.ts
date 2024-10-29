@@ -23,6 +23,6 @@ export class MenuComponent  {
 
   async logout() {
     await this.authService.logout();
-    this.router.navigate(['/login']);
+    window.location.href = '/login';
   }
 }

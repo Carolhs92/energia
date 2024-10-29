@@ -24,7 +24,7 @@ export class PerfilPage implements OnInit {
 
   // Cargar datos del perfil del usuario
   async loadPerfil() {
-    const { data: { session } } = await this.authService.getCurrentUser();
+    const session = await this.authService.getCurrentUser(); // Accede directamente a session
     if (session && session.user) {
       const { data: perfil, error } = await this.userService.getUserData(session.user.id);
 
@@ -44,7 +44,8 @@ export class PerfilPage implements OnInit {
 
   // Actualizar los datos del perfil
   async actualizarPerfil() {
-    const { data: { session } } = await this.authService.getCurrentUser();
+    const session = await this.authService.getCurrentUser(); // Accede directamente a session
+    console.log("ID del usuario autenticado:", session?.user?.id);
 
     if (session && session.user) {
       const updateData = {

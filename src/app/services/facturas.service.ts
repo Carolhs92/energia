@@ -1,47 +1,48 @@
 import { Injectable } from '@angular/core';
-import { createClient } from '@supabase/supabase-js';
-import { environment } from '../../environments/environment'; 
+import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FacturasService {
-  private supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+  private supabase: SupabaseClient;
 
-  constructor() {}
+  constructor() {
+    this.supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
+  }
 
-  // Obtener todas las facturas con paginación
-  async getFacturasPaginadas() {
+  // Método para obtener facturas del usuario
+  async getFacturasByUser(userId: string) {
     const { data, error } = await this.supabase
       .from('facturas')
       .select('*')
-      .range(0, 9);  // Devuelve las primeras 10 facturas
+      .eq('user_id', userId); // Aplica el filtro por user_id
+  
+    if (error) {
+      console.error('Error al obtener facturas:', error);
+    }
     return { data, error };
-  }
-
-  // Obtener todas las facturas
-  async getFacturas() {
-    const { data, error } = await this.supabase
-      .from('facturas')
-      .select('*');
-    return { data, error };
-  }
-
-    // Obtener el archivo PDF desde Supabase Storage
-    async download(facturaId: string) {
-        const { data, error } = await this.supabase
-        .storage
-        .from('facturasPDF')  // Nombre del bucket en Supabase Storage
-        .download(`public/${facturaId}.pdf`);  // Ruta del archivo en el bucket
-    
-        if (error) {
-        console.error('Error al descargar el PDF:', error);
-        return null;  // Retorna null si hay un error
-        }
-    
-        // data es un Blob que representa el archivo PDF
-        return data;  // Devuelve el archivo como Blob
+  }  
+  
+  
+  // Método para descargar el PDF
+  async download(facturaId: string): Promise<{ data: boolean | null; error: any | null }> {
+    const { data, error } = await this.supabase.storage
+      .from('facturasPDF')
+      .download(`public/${facturaId}.pdf`);
+  
+    if (error) {
+      console.error('Error al descargar el archivo:', error);
+      return { data: null, error }; // Retorna un objeto con `data: null` y `error`
+    } else if (data) {
+      const url = URL.createObjectURL(data);
+      window.open(url); // Abre el archivo PDF
+      return { data: true, error: null }; // Retorna éxito en `data`
     }
   
-  
+    // Agregar retorno en caso de que `data` no esté definido y tampoco haya un error explícito
+    return { data: null, error: 'Unknown error' };
+  }
+
 }
