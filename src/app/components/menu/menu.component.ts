@@ -14,12 +14,16 @@ export class MenuComponent  {
   ) {}
 
   goToFacturas() {
-    this.router.navigate(['/facturas']);
+    this.router.navigate(['/facturas']).then(() => {
+      window.location.reload();
+    });
   }
-
+  
   goToPerfil() {
-    this.router.navigate(['/perfil']);
-  }
+    this.router.navigate(['/perfil']).then(() => {
+      window.location.reload();
+    });
+  }  
 
   async logout() {
     await this.authService.logout();
