@@ -9,12 +9,10 @@
   <button mat-button [matMenuTriggerFor]="menu">
     <mat-icon>menu</mat-icon> Menú
   </button>
-
   <mat-menu #menu="matMenu">
     <button mat-menu-item (click)="goToFacturas()">Facturas</button>
     <button mat-menu-item (click)="goToPerfil()">Perfil</button>
   </mat-menu>
-
   <!-- Botón de cerrar sesión en el lado derecho -->
   <button mat-button (click)="logout()" class="logout-button">
     <mat-icon>exit_to_app</mat-icon> Cerrar sesión

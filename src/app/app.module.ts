@@ -12,8 +12,12 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
+import { FormsModule } from '@angular/forms';
 
 import { FacturasService } from './services/facturas.service'; 
 
@@ -31,6 +35,8 @@ import { FacturasService } from './services/facturas.service';
     AppRoutingModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    MatFormFieldModule,
+    MatIconModule,
     MatInputModule,
     MatButtonModule,
     MatTableModule,
@@ -38,6 +44,7 @@ import { FacturasService } from './services/facturas.service';
     MatToolbarModule,
     MatMenuModule,
     AppRoutingModule,  
+    FormsModule
 
   ],
   providers: [

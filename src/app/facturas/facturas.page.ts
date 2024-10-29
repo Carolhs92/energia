@@ -16,33 +16,22 @@ export class FacturasPage implements OnInit {
   constructor(private facturasService: FacturasService, private authService: AuthService) {}
 
   async ngOnInit() {
-    const session = await this.authService.getCurrentUser();
-    console.log("ID del usuario autenticado:", session?.user?.id);
-    this.userId = session?.user?.id || null;
-
-    if (this.userId) {
-      await this.loadFacturasPaginadas();
+    const userId = await this.authService.getCurrentUserId();
+    if (userId) {
+      await this.loadFacturas(userId);
     } else {
       console.error('No se pudo obtener el ID del usuario.');
     }
-  }
+  } 
 
-  async loadFacturasPaginadas() {
-    if (!this.userId) {
-      console.error("User ID no está definido.");
-      return;
-    }
-  
-    console.log('Cargando facturas para userId:', this.userId);  // Confirmar userId en la consola
-  
-    const { data, error } = await this.facturasService.getFacturasByUser(this.userId);
+  async loadFacturas(userId: string) {
+    const { data, error } = await this.facturasService.getFacturasByUser(userId);
     if (error) {
-      console.error('Error al traer las facturas', error);
+      console.error('Error al traer las facturas:', error);
     } else {
       this.facturas.data = data || [];
-      console.log('Facturas cargadas:', this.facturas.data);
     }
-  }  
+  }
   
   async downloadPDF(facturaId: string) {
     const result = await this.facturasService.download(facturaId);

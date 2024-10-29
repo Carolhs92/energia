@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service'; // Servicio de autenticación
+import { AuthService } from '../services/auth.service'; 
 
 @Component({
   selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginPage implements OnInit {
   constructor(
     private fb: FormBuilder, 
     private router: Router,
-    private authService: AuthService // Inyecta el servicio de autenticación
+    private authService: AuthService 
   ) {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
@@ -27,7 +27,7 @@ export class LoginPage implements OnInit {
   async onSubmit() {
     const { email, password } = this.loginForm.value;
     
-    console.log('Intentando iniciar sesión con:', email, password); // Debugging
+    console.log('Intentando iniciar sesión con:', email, password); 
   
     // Autenticación usando el servicio
     const { data, error } = await this.authService.login(email, password);
@@ -42,4 +42,14 @@ export class LoginPage implements OnInit {
       alert('Usuario o contraseña incorrecta');
     }
   }
+
+  async loginUser(email: string, password: string) {
+    const { data, error } = await this.authService.login(email, password);
+    if (error) {
+      console.error("Error de inicio de sesión:", error.message);
+    } else {
+      console.log("Inicio de sesión exitoso:", data);
+    }
+  }
+  
 }

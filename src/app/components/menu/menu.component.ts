@@ -10,7 +10,7 @@ import { AuthService } from '../../services/auth.service';
 export class MenuComponent  {
   constructor(
     private authService: AuthService,
-    private router: Router
+    private router: Router,
   ) {}
 
   goToFacturas() {
@@ -25,4 +25,5 @@ export class MenuComponent  {
     await this.authService.logout();
     window.location.href = '/login';
   }
+  
 }

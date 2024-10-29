@@ -32,7 +32,7 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     PerfilPageRoutingModule,
     IonicModule,
-    RouterModule,
+    RouterModule.forChild([{ path: '', component: PerfilPage }])
   ]
 })
 export class PerfilPageModule { }

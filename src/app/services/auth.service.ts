@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment'; 
 
 @Injectable({
@@ -17,14 +17,14 @@ export class AuthService {
     return await this.supabase.auth.signInWithPassword({ email, password });
   }
 
-  // Obtener sesión actual
-  async getCurrentUser() {
+  // Obtener ID del usuario actual
+  async getCurrentUserId(): Promise<string | null> {
     const { data, error } = await this.supabase.auth.getSession();
     if (error) {
-      console.error('Error al obtener la sesión del usuario:', error);
+      console.error('Error al obtener la sesión:', error);
       return null;
     }
-    return data?.session || null; // Devuelve la sesión directamente
+    return data.session?.user?.id || null;  // Devuelve solo el user ID
   }
 
   // Cerrar sesión
@@ -35,16 +35,19 @@ export class AuthService {
   // Obtener datos del usuario (perfil)
   async getUserData(userId: string) {
     const { data, error } = await this.supabase
-        .from('usuarios')  // Asegúrate de que la tabla es 'usuarios'
-        .select('*')
-        .eq('id', userId); // Aquí 'id' debe coincidir con el campo que almacena el user_id en tu tabla de usuarios
-
+      .from('usuarios')
+      .select('*')
+      .eq('user_id', userId);
+  
     if (error) {
-        console.error('Error al obtener el perfil:', error);
+      console.error('Error al obtener los datos del usuario:', error);
+    } else if (data && data.length === 0) {
+      console.warn(`No se encontraron datos para el usuario con ID: ${userId}`);
     }
+  
+    console.log("Datos obtenidos del usuario:", data);
     return { data, error };
-}
-
+  }
 
   // Actualizar datos del usuario (perfil)
   async updateUserData(userId: string, profileData: any) {
